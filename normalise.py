@@ -30,7 +30,7 @@ pth+='.proc'
 
 sys.stdout.write('Normalising the data\n')
 os.system('rm -f norm.log')
-os.system(config.moses+'/moses -dl 0 -threads '+str(config.num_cores)+' -f '+config.working_dir+'/model/moses.ini < '+pth+' 2> norm.log 1> '+pth+'.norm')
+os.system(config.moses+'/moses -dl 0 -threads '+str(config.num_cores)+' -f '+config.working_dir+'/mert-work/moses.ini < '+pth+' 2> norm.log 1> '+pth+'.norm')
 pth+='.norm'
 
 sys.stdout.write('Postprocessing the data\n')
