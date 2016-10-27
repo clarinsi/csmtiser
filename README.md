@@ -89,4 +89,4 @@ The exemplary normaliser can be run like this:
 python normalise.py text_to_normalise.txt
 ```
 
-The output is available in ```text_to_normalise.txt.norm```. If tokenisation or truecasing are performed during data preparation, the reverse processes are run at the end of the normalisation process. Notice that detruecasing our exemplary datset does not make much sense, but is, again performed for showcasing purposes.
+The output is available in ```text_to_normalise.txt.norm```. If tokenisation or truecasing are performed during data preparation, the reverse processes are run at the end of the normalisation process.
