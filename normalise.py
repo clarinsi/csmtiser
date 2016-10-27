@@ -42,7 +42,7 @@ def postprocess(input,output):
 postprocess(pth,pth+'.deproc')
 pth+='.deproc'
 
-if config.detruecase:
+if config.truecase:
   sys.stdout.write('Detruecasing\n')
   os.system(config.moses_scripts+'/recaser/detruecase.perl < '+pth+' > '+pth+'.detrue')
   pth+='.detrue'
