@@ -83,6 +83,8 @@ $ nohup python train.py &
 
 The final normaliser is run through the ```normalise.py``` script, where the first argument is the file whose content has to be normalised. The output is stored to the same path extended with the extension ```.norm```.
 
+Logging of the normalisation process is performed in ```norm.log``` in the working directory.
+
 The exemplary normaliser can be run like this:
 
 ```
