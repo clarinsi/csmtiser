@@ -1,5 +1,8 @@
 # Configuration file of the normaliser. The paths to Moses components and various parameters are set here.
 
+# Absolute path to the directory in which the models should be created
+working_dir='/home/nikola/tools/clarinsi/csmtiser/'
+
 # Encoding of all the datasets
 encoding='utf8'
 
@@ -42,3 +45,8 @@ kenlm='/home/nikola/install/mosesdecoder/bin/'
 # Location of the Moses decoder, mostly same as location of KenLM
 moses='/home/nikola/install/mosesdecoder/bin/'
 
+# Location of mgiza
+mgiza='/home/nikola/install/mosesdecoder/mgiza/mgizapp/bin/'
+
+# Number of CPU cores to use during training and tuning
+num_cores=23
