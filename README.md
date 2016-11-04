@@ -6,7 +6,7 @@ A tool for text normalisation via character-level machine translation
 The tool requires the following tools to be installed:
 
 * moses decoder + KenLM (http://www.statmt.org/moses/?n=Development.GetStarted)
-* mgiza (https://github.com/moses-smt/mgiza)
+* mgiza (https://github.com/moses-smt/mgiza). Installation instructions for mgiza can be found [here](http://www.statmt.org/moses/?n=Moses.ExternalTools#ntoc3). Compiling MGIZA requires the Boost library, which can be installed by running `sudo apt-get install libboost-all-dev` command
 
 Additionally, the tool expects basic bash functionality and can therefore be run on *NIX systems / environments only.
 
