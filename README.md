@@ -6,7 +6,7 @@ A tool for text normalisation via character-level machine translation
 The tool requires the following tools to be installed:
 
 * moses decoder + KenLM (http://www.statmt.org/moses/?n=Development.GetStarted)
-* mgiza (https://github.com/moses-smt/mgiza)
+* mgiza (https://github.com/moses-smt/mgiza). Installation instructions for mgiza can be found [here](http://www.statmt.org/moses/?n=Moses.ExternalTools#ntoc3). Compiling MGIZA requires the Boost library, which can be installed by running `sudo apt-get install libboost-all-dev` command
 
 Additionally, the tool expects basic bash functionality and can therefore be run on *NIX systems / environments only.
 
@@ -18,13 +18,18 @@ Running the tool consists of the following steps:
 - building the models and tuning the system
 - running the final normaliser
 
-We exemplify each step on a dataset of Slovene tweets. The initial data can be found in ```tweets_sl.orig``` and ```tweets_sl.norm```.
+We exemplify each step on a dataset of Slovene tweets. The initial data consists of four files:
+- ```tweets_sl.orig``` and ```tweets_sl.norm``` contain parallel training data (i.e. each line of the ```orig file``` corresponds to a line in the ```norm``` file),
+- ```tweets_sl.all``` contains all available normalised data and is used to learn the truecasing model (optional, more on that below),
+- ```tweets_sl``` contains additional normalised data used to train a language model (i.e. in addition to the ```tweets_sl.norm``` file, which is by default used to train a language model).
 
 ### Configuring your normaliser
 
-The first step is to let the normaliser know where to find components of the Moses SMT system and to define various parameters.
+The first step is to let the normaliser know where to find components of the Moses SMT system and your initial data, as well as to define various parameters.
 
 To perform configuration, go through the ```config.py``` script and change values of variables where necessary. Comments inside the code should help you during the process.
+
+Note that you can name your initial data files as you wish, but the parallel training files obligatorily have to end in ```.orig``` and ```.norm```.
 
 ### Data preprocessing
 
@@ -32,9 +37,9 @@ The first, optional step in preprocessing is tokenisation. The exemplary dataset
 
 To fight data sparseness (you never have enough manually normalised data to have seen all the phenomena) we either perform truecasing or lowercasing of the data.
 
-Truecasing s a method that calculates the statistics for each word regarding the case (lowercase, uppercase) it was seen when not at the beginning of the sentence. The most frequent case is then enforced on all sentence beginnings.
+Truecasing is a method that calculates the statistics for each word regarding the case (lowercase, uppercase) it was seen when not at the beginning of the sentence. The most frequent case is then enforced on all sentence beginnings.
 
-Lowercasing is a more agressive way to fight data sparsness than truecasing. In case of using lowercasing, all text normalised will be lowercased as well. This method should be applied if (1) there is not much data (less than a few million tokens) to learn a decent truecaser or (2) casing is not used in a consistent or traditional (beginning of sentence) way, like in user-generated content. We perform truecasing on our exemplary dataset just to showcase the truecasing method, although lowercasing would be a more reasonable option in our case.
+Lowercasing is a more agressive way to fight data sparseness than truecasing. In case of using lowercasing, all text normalised will be lowercased as well. This method should be applied if (1) there is not much data (less than a few million tokens) to learn a decent truecaser or (2) casing is not used in a consistent or traditional (beginning of sentence) way, like in user-generated content. We perform truecasing on our exemplary dataset just to showcase the truecasing method, although lowercasing would be a more reasonable option in our case.
 
 After truecasing or lowercasing, the dataset is split into train and dev data (if no extra development data is made available) and transformed to the format necessary for learning the models.
 
@@ -73,7 +78,7 @@ Tuning the system
 
 During the first runs the logging script ```train.log``` should be analysed to make sure that all the processes were finished successfully. This wrapper does not do much in reporting errors, just logs the output of the wrapped tools.
 
-Additionally, training the exemplary system on 23 server-grade cores takes 2.3 hours (all together 47 CPU hours), so running the training procedure in background is probably a good idea. The simplest way to do so on a *NIX is this:
+Additionally, training the exemplary system on 23 server-grade cores takes 2.3 hours (all together 47 CPU hours), so running the training procedure in the background is probably a good idea. The simplest way to do so on a *NIX is this:
 
 ```
 $ nohup python train.py &

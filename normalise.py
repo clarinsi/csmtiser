@@ -29,8 +29,8 @@ preprocess(pth,pth+'.proc')
 pth+='.proc'
 
 sys.stdout.write('Normalising the data\n')
-os.system('rm -f norm.log')
-os.system(config.moses+'/moses -dl 0 -threads '+str(config.num_cores)+' -f '+config.working_dir+'/mert-work/moses.ini < '+pth+' 2> norm.log 1> '+pth+'.norm')
+os.system('rm -f '+config.working_dir+'/norm.log')
+os.system(config.moses+'/moses -dl 0 -threads '+str(config.num_cores)+' -f '+config.working_dir+'/mert-work/moses.ini < '+pth+' 2> '+config.working_dir+'/norm.log 1> '+pth+'.norm')
 pth+='.norm'
 
 sys.stdout.write('Postprocessing the data\n')
@@ -52,4 +52,3 @@ if config.tokenise:
   pth+='.detok'
 
 os.system('mv '+pth+' '+sys.argv[1]+'.norm')
-  
