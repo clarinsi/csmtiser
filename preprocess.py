@@ -4,12 +4,14 @@ import sys
 
 train_orig=config.train_orig
 train_norm=config.train_norm
+train=[config.train_orig,config.train_norm]
 lms=config.lms[:]
 
 if config.tokenise:
-  for pth in (config.train_orig,config.train_norm):
-    os.system(config.moses_scripts+'/tokenizer/tokenizer.perl < '+pth+' > '+pth+'.tok')
-    pth+='.tok'
+  os.system(config.moses_scripts+'/tokenizer/tokenizer.perl < '+config.train_orig+' > '+config.train_orig+'.tok')
+  config.train_orig+='.tok'
+  os.system(config.moses_scripts+'/tokenizer/tokenizer.perl < '+config.train_norm+' > '+config.train_norm+'.tok')
+  config.train_norm+='.tok'
 
 if config.truecase:
   if config.truecase_model==None:
@@ -24,20 +26,22 @@ if config.truecase:
     if config.truecase_dataset==config.train_orig+'.tmp':
       os.system('rm '+config.train_orig+'.tmp')
     config.truecase_model=config.working_dir+'/truecase.model'
-  for pth in (config.train_orig,config.train_norm):
-    sys.stdout.write('Truecasing '+pth+'\n') 
-    os.system(config.moses_scripts+'/recaser/truecase.perl --model '+config.truecase_model+' < '+pth+' > '+pth+'.true')
-    pth+='.true'
+  sys.stdout.write('Truecasing training\n') 
+  os.system(config.moses_scripts+'/recaser/truecase.perl --model '+config.truecase_model+' < '+config.train_orig+' > '+config.train_orig+'.true')
+  config.train_orig+='.true'
+  os.system(config.moses_scripts+'/recaser/truecase.perl --model '+config.truecase_model+' < '+config.train_norm+' > '+config.train_norm+'.true')
+  config.train_norm+='.true'
   for index,pth in enumerate(config.lms):
     sys.stdout.write('Truecasing '+pth+'\n')
     os.system(config.moses_scripts+'/recaser/truecase.perl --model '+config.truecase_model+' < '+pth+' > '+pth+'.true')
     config.lms[index]+='.true'
 
 if config.lowercase:
-  for pth in (config.train_orig,config.train_norm):
-    sys.stdout.write('Lowercasing '+pth+'\n')
-    os.system(config.moses_scripts+'/tokenizer/lowercase.perl < '+pth+' > '+pth+'.lower')
-    pth+='.lower'
+  sys.stdout.write('Lowercasing training\n')
+  os.system(config.moses_scripts+'/tokenizer/lowercase.perl < '+config.train_orig+' > '+config.train_orig+'.lower')
+  config.train_orig+='.lower'
+  os.system(config.moses_scripts+'/tokenizer/lowercase.perl < '+config.train_norm+' > '+config.train_norm+'.lower')
+  config.train_norm+='.lower'
   for index,pth in enumerate(config.lms):
     sys.stdout.write('Lowercasing '+pth+'\n')
     os.system(config.moses_scripts+'/tokenizer/lowercase.perl < '+pth+' > '+pth+'.lower')
