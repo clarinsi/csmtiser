@@ -1,6 +1,7 @@
 import config
 import os
 import sys
+import re
 
 pth=sys.argv[1]
 
@@ -23,14 +24,14 @@ sys.stdout.write('Preprocessing the data\n')
 def preprocess(input,output):
   out=open(output,'w')
   for line in open(input):
-    out.write('_ '+' '.join(line.decode(config.encoding).strip().replace(' ','_')).encode(config.encoding)+' _\n')
+    out.write(re.sub(r'_ (\d+[.,/: ]?\d*) _',r'_ <np translation="\1">\1</np> _','_ '+' '.join(line.decode(config.encoding).strip().replace(' ','_')).encode(config.encoding)+' _\n'))
   out.close()
 preprocess(pth,pth+'.proc')
 pth+='.proc'
 
 sys.stdout.write('Normalising the data\n')
 os.system('rm -f '+config.working_dir+'/norm.log')
-os.system(config.moses+'/moses -dl 0 -threads '+str(config.num_cores)+' -f '+config.working_dir+'/mert-work/moses.ini < '+pth+' 2> '+config.working_dir+'/norm.log 1> '+pth+'.norm')
+os.system(config.moses+'/moses -xml-input exclusive -dl 0 -threads '+str(config.num_cores)+' -f '+config.working_dir+'/mert-work/moses.ini < '+pth+' 2> '+config.working_dir+'/norm.log 1> '+pth+'.norm')
 pth+='.norm'
 
 sys.stdout.write('Postprocessing the data\n')
