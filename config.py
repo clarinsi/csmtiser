@@ -19,6 +19,9 @@ truecase_model=None
 # Whether the data should be lowercased, if the data is written in non-standard orthography (like Twitter data), this is probably a good idea, however, all normalisation will therefore be lowercased as well
 lowercase=False
 
+# Whether the output should be verticalised and token-aligned
+align=True
+
 # Training datasets
 train_orig=working_dir+'tweet_sl.orig'
 train_norm=working_dir+'tweet_sl.norm'
