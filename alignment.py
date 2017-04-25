@@ -157,6 +157,7 @@ def rebalanceAlignments(oChars, tChars, alignments):
 				print "** Merge alignments:", "".join(previousSequence[0]), "".join(previousSequence[1]), "".join(oSequence), "".join(tSequence)
 			mergedAlignment = (alignments[i-1][0], alignment[1], alignments[i-1][2], alignment[3])
 			alignments2.append(mergedAlignment)
+			alignments2.remove(alignments[i-1])
 		else:
 			alignments2.append(alignment)
 		previousCounts = currentCounts
@@ -186,7 +187,7 @@ def case(orig,trans):
 		trans=trans[:1].upper()+trans[1:]
 	return trans
 
-def retokenize(orig_segm, trans_segm, verticalized,casing):
+def retokenize(orig_segm, trans_segm, verticalized, casing=False):
 	orig_segm_file = codecs.open(orig_segm, 'r', 'utf-8')
 	trans_segm_file = codecs.open(trans_segm, 'r', 'utf-8')
 	verticalized_file = codecs.open(verticalized, 'w', 'utf-8')
