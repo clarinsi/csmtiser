@@ -186,7 +186,7 @@ def case(orig,trans):
 		trans=trans[:1].upper()+trans[1:]
 	return trans
 
-def retokenize(orig_segm, trans_segm, verticalized):
+def retokenize(orig_segm, trans_segm, verticalized,casing):
 	orig_segm_file = codecs.open(orig_segm, 'r', 'utf-8')
 	trans_segm_file = codecs.open(trans_segm, 'r', 'utf-8')
 	verticalized_file = codecs.open(verticalized, 'w', 'utf-8')
@@ -203,14 +203,16 @@ def retokenize(orig_segm, trans_segm, verticalized):
 		for origword, transword in wordpairs:
 			origword="".join(origword)
 			transword="".join(transword)
-			if first:
-				first=False
-				if origword.islower():
-					origword=origword[:1].upper()+origword[1:]
-					transword=transword[:1].upper()+transword[1:]
-				elif origword.istitle():
-					transword=transword[:1].upper()+transword[1:]
-			#transword=case(origword,transword)
+			if casing:
+				if first:
+					first=False
+					if origword.islower():
+						origword=origword[:1].upper()+origword[1:]
+						transword=transword[:1].upper()+transword[1:]
+					elif origword.istitle():
+						transword=transword[:1].upper()+transword[1:]
+				else:
+					transword=case(origword,transword)
 			if len(transword)==0:
 				transword="DELETED"
 			verticalized_file.write(origword + "\t" + transword + "\n")

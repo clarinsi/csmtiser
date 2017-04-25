@@ -39,7 +39,10 @@ pth+='.norm'
 
 if config.align:
   from alignment import retokenize
-  retokenize(pth[:-5],pth,pth+'.align')
+  if config.lowercase:
+    retokenize(pth[:-5],pth,pth+'.align',True)
+  else:
+    retokenize(pth[:-5],pth,pth+'.align',False)
   pth+='.align'
 else:
   sys.stdout.write('Postprocessing the data\n')
