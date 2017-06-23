@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Configuration file of the normaliser. The paths to Moses components and various parameters are set here.
 
 # Absolute path to the directory in which the models should be created
@@ -5,6 +7,11 @@ working_dir='/home/nikola/tools/clarinsi/csmtiser/'
 
 # Encoding of all the datasets
 encoding='utf8'
+
+# the character to be used internally for marking word boundaries
+# this must be a single character that is different from the space character and does not appear anywhere in the corpus
+# usually, the underscore (_) is a good choice, but as it occurs in the example Slovene twitter file we use the pound sign here
+tokenseparator='£'
 
 # Whether the data has to be tokenised, ie. spaces put before punctuation etc.
 tokenise=False

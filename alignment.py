@@ -37,11 +37,11 @@ def normLevenshtein(a, b):
 		return l / float(max(len(a), len(b)))
 
 
-def getUnderscoreAlignments(oChars, tChars, alignments):
+def getUnderscoreAlignments(oChars, tChars, alignments, SEP="_"):
 	underscorePairs = []
 	for alignment in alignments:
-		oUnderscoreIndices = [i for i in range(alignment[0], alignment[1]) if oChars[i] == "_"]
-		tUnderscoreIndices = [i for i in range(alignment[2], alignment[3]) if tChars[i] == "_"]
+		oUnderscoreIndices = [i for i in range(alignment[0], alignment[1]) if oChars[i] == SEP]
+		tUnderscoreIndices = [i for i in range(alignment[2], alignment[3]) if tChars[i] == SEP]
 		
 		# assume monotone underscore alignment in case of identical counts
 		if len(oUnderscoreIndices) == len(tUnderscoreIndices):
@@ -144,19 +144,20 @@ def splitByUnderscoreAlignment(oChars, tChars, uAlignments):
 	return wordpairs
 
 
-def rebalanceAlignments(oChars, tChars, alignments):
+def rebalanceAlignments(oChars, tChars, alignments, SEP="_"):
 	previousCounts = (0, 0)
 	previousSequence = ("", "")
 	alignments2 = []
 	for i, alignment in enumerate(alignments):
 		oSequence = oChars[alignment[0]:alignment[1]]
 		tSequence = tChars[alignment[2]:alignment[3]]
-		currentCounts = (oSequence.count("_"), tSequence.count("_"))
+		currentCounts = (oSequence.count(SEP), tSequence.count(SEP))
 		if (currentCounts[0] != currentCounts[1]) and (currentCounts[0]+previousCounts[0] == currentCounts[1]+previousCounts[1]):
 			if verbatim:
 				print "** Merge alignments:", "".join(previousSequence[0]), "".join(previousSequence[1]), "".join(oSequence), "".join(tSequence)
 			mergedAlignment = (alignments[i-1][0], alignment[1], alignments[i-1][2], alignment[3])
 			alignments2.append(mergedAlignment)
+			alignments2.remove(alignments[i-1])
 		else:
 			alignments2.append(alignment)
 		previousCounts = currentCounts
@@ -186,18 +187,18 @@ def case(orig,trans):
 		trans=trans[:1].upper()+trans[1:]
 	return trans
 
-def retokenize(orig_segm, trans_segm, verticalized,casing):
-	orig_segm_file = codecs.open(orig_segm, 'r', 'utf-8')
-	trans_segm_file = codecs.open(trans_segm, 'r', 'utf-8')
-	verticalized_file = codecs.open(verticalized, 'w', 'utf-8')
+def retokenize(orig_segm, trans_segm, verticalized, casing=False, SEP="_", DELETED="DELETED", encoding='utf-8'):
+	orig_segm_file = codecs.open(orig_segm, 'r', encoding)
+	trans_segm_file = codecs.open(trans_segm, 'r', encoding)
+	verticalized_file = codecs.open(verticalized, 'w', encoding)
 	
 	for origsentence, transsentence in zip(orig_segm_file, trans_segm_file):
 		origsentence = re.sub(r'<.+?>', '', origsentence)		# get rid of xml constraint annotation
 		origchars = origsentence.strip().split(" ")
 		transelements = transsentence.strip().split(" ")
 		transchars, transalignments = extractAlignments(transelements)
-		transalignments = rebalanceAlignments(origchars, transchars, transalignments)
-		underscorealignments = getUnderscoreAlignments(origchars, transchars, transalignments)
+		transalignments = rebalanceAlignments(origchars, transchars, transalignments, SEP)
+		underscorealignments = getUnderscoreAlignments(origchars, transchars, transalignments, SEP)
 		wordpairs = splitByUnderscoreAlignment(origchars, transchars, underscorealignments)
 		first=True
 		for origword, transword in wordpairs:
@@ -214,8 +215,8 @@ def retokenize(orig_segm, trans_segm, verticalized,casing):
 				else:
 					transword=case(origword,transword)
 			if len(transword)==0:
-				transword="DELETED"
-			verticalized_file.write(origword + "\t" + transword + "\n")
+				transword=DELETED
+			verticalized_file.write(origword + "\t" + transword.replace(SEP, " ") + "\n")
 		verticalized_file.write("\n")
 	orig_segm_file.close()
 	trans_segm_file.close()

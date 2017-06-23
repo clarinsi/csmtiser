@@ -2,6 +2,7 @@ import config
 import os
 import sys
 import re
+import string
 
 pth=sys.argv[1]
 
@@ -21,13 +22,25 @@ if config.lowercase:
   pth+='.lower'
 
 sys.stdout.write('Preprocessing the data\n')
+SEP=config.tokenseparator.decode('utf-8')
+warn=False
 def preprocess(input,output):
   out=open(output,'w')
   for line in open(input):
-    out.write(re.sub(r'_ ([^_]*\d[^_]*|[-.:,;!?]) _',r'_ <np translation="\1">\1</np> _','_ '+' '.join(line.decode(config.encoding).strip().replace(' ','_')).encode(config.encoding)+' _\n'))
+    line = line.decode(config.encoding)
+    if SEP in line:
+      warn=True
+    replace_expr = ur'{0} ([^{0}]*\d[^{0}]*|[{1}]) {0}'.format(re.escape(SEP), "".join([re.escape(x) for x in string.punctuation if x != SEP]))
+    replacement = ur'{0} <np translation="\1">\1</np> {0}'.format(SEP)
+    modline = SEP+' '+' '.join(line.strip().replace(' ',SEP))+' '+SEP+'\n'
+    outline = re.sub(replace_expr, replacement, modline)#.encode(config.encoding))
+    out.write(outline.encode(config.encoding))
+    #out.write(re.sub(r'_ ([^_]*\d[^_]*|[-.:,;!?]) _',r'_ <np translation="\1">\1</np> _','_ '+' '.join(line.decode(config.encoding).strip().replace(' ','_')).encode(config.encoding)+' _\n'))
   out.close()
 preprocess(pth,pth+'.proc')
 pth+='.proc'
+if warn:
+  print("The token separator ({}) occurs in the test data. Output may not look as expected.".format(SEP))
 
 sys.stdout.write('Normalising the data\n')
 os.system('rm -f '+config.working_dir+'/norm.log')
@@ -40,16 +53,16 @@ pth+='.norm'
 if config.align:
   from alignment import retokenize
   if config.lowercase:
-    retokenize(pth[:-5],pth,pth+'.align',True)
+    retokenize(pth[:-5],pth,pth+'.align',True,SEP=SEP)
   else:
-    retokenize(pth[:-5],pth,pth+'.align',False)
+    retokenize(pth[:-5],pth,pth+'.align',False,SEP=SEP)
   pth+='.align'
 else:
   sys.stdout.write('Postprocessing the data\n')
   def postprocess(input,output):
     out=open(output,'w')
     for line in open(input):
-      out.write(line.strip().strip(' _').replace(' ','').replace('_',' ')+'\n')
+      out.write(line.strip().strip(' '+SEP).replace(' ','').replace(SEP,' ')+'\n')
     out.close()
   postprocess(pth,pth+'.deproc')
   pth+='.deproc'

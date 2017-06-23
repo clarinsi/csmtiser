@@ -82,10 +82,14 @@ if config.dev_orig==None:
   config.train_norm+='.train'
 
 sys.stdout.write('Preparing the data for learning the models\n')
+SEP=config.tokenseparator.decode('utf-8')
+warn=False
 def preprocess(input,output):
   out=open(output,'w')
   for line in open(input):
-    out.write('_ '+' '.join(line.decode(config.encoding).strip().replace(' ','_')).encode(config.encoding)+' _\n')
+    if SEP in line.decode(config.encoding):
+      warn=True
+    out.write((SEP+' '+' '.join(line.decode(config.encoding).strip().replace(' ',SEP))+' '+SEP+'\n').encode(config.encoding))
   out.close()
 preprocess(config.train_orig,config.working_dir+'/train.orig')
 preprocess(config.train_norm,config.working_dir+'/train.norm')
@@ -93,3 +97,5 @@ preprocess(config.dev_orig,config.working_dir+'/dev.orig')
 preprocess(config.dev_norm,config.working_dir+'/dev.norm')
 for index,pth in enumerate(config.lms):
   preprocess(pth,'lm_'+str(index)+'.proc')
+if warn:
+  print("You have chosen a token separator ({}) that occurs in the data! Consider choosing another separator in config.py.".format(SEP))
