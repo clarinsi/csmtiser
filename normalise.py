@@ -22,12 +22,12 @@ if config.lowercase:
   pth+='.lower'
 
 sys.stdout.write('Preprocessing the data\n')
-SEP=config.tokenseparator.decode('utf-8')
+SEP=config.tokenseparator.decode(config.encoding)
 warn=False
 def preprocess(input,output):
   out=open(output,'w')
   for line in open(input):
-    line = line.decode(config.encoding)
+    line=line.decode(config.encoding)
     if SEP in line:
       warn=True
     replace_expr = ur'{0} ([^{0}]*\d[^{0}]*|[{1}]) {0}'.format(re.escape(SEP), "".join([re.escape(x) for x in string.punctuation if x != SEP]))
@@ -62,7 +62,7 @@ else:
   def postprocess(input,output):
     out=open(output,'w')
     for line in open(input):
-      out.write(line.strip().strip(' '+SEP).replace(' ','').replace(SEP,' ')+'\n')
+      out.write((line.decode(config.encoding).strip().strip(' '+SEP).replace(' ','').replace(SEP,' ')+'\n').encode(config.encoding))
     out.close()
   postprocess(pth,pth+'.deproc')
   pth+='.deproc'
