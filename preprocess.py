@@ -26,22 +26,32 @@ if config.truecase:
     if config.truecase_dataset==config.train_orig+'.tmp':
       os.system('rm '+config.train_orig+'.tmp')
     config.truecase_model=config.working_dir+'/truecase.model'
-  sys.stdout.write('Truecasing training\n') 
+  sys.stdout.write('Truecasing train, dev, lm\n') 
   os.system(config.moses_scripts+'/recaser/truecase.perl --model '+config.truecase_model+' < '+config.train_orig+' > '+config.train_orig+'.true')
   config.train_orig+='.true'
   os.system(config.moses_scripts+'/recaser/truecase.perl --model '+config.truecase_model+' < '+config.train_norm+' > '+config.train_norm+'.true')
   config.train_norm+='.true'
+  if config.dev_orig!=None:
+    os.system(config.moses_scripts+'/recaser/truecase.perl --model '+config.truecase_model+' < '+config.dev_orig+' > '+config.dev_orig+'.true')
+    config.dev_orig+='.true'
+    os.system(config.moses_scripts+'/recaser/truecase.perl --model '+config.truecase_model+' < '+config.dev_norm+' > '+config.dev_norm+'.true')
+    config.dev_norm+='.true'
   for index,pth in enumerate(config.lms):
     sys.stdout.write('Truecasing '+pth+'\n')
     os.system(config.moses_scripts+'/recaser/truecase.perl --model '+config.truecase_model+' < '+pth+' > '+pth+'.true')
     config.lms[index]+='.true'
 
 if config.lowercase:
-  sys.stdout.write('Lowercasing training\n')
+  sys.stdout.write('Lowercasing training, dev, lm\n')
   os.system(config.moses_scripts+'/tokenizer/lowercase.perl < '+config.train_orig+' > '+config.train_orig+'.lower')
   config.train_orig+='.lower'
   os.system(config.moses_scripts+'/tokenizer/lowercase.perl < '+config.train_norm+' > '+config.train_norm+'.lower')
   config.train_norm+='.lower'
+  if config.dev_orig!=None:
+    os.system(config.moses_scripts+'/tokenizer/lowercase.perl < '+config.dev_orig+' > '+config.dev_orig+'.lower')
+    config.dev_orig+='.lower'
+    os.system(config.moses_scripts+'/tokenizer/lowercase.perl < '+config.dev_norm+' > '+config.dev_norm+'.lower')
+    config.dev_norm+='.lower'
   for index,pth in enumerate(config.lms):
     sys.stdout.write('Lowercasing '+pth+'\n')
     os.system(config.moses_scripts+'/tokenizer/lowercase.perl < '+pth+' > '+pth+'.lower')

@@ -18,7 +18,7 @@ for index,pth in enumerate(config.lms):
     pth2=config.working_dir+'/lm_'+str(index-1)+'.proc'
   else:
     pth2=pth
-  os.system(config.kenlm+'/lmplz -o '+str(config.lm_order)+' --discount_fallback < '+pth+' 1> '+pth2+'.arpa 2>> '+config.working_dir+'/train.log')
+  os.system(config.kenlm+'/lmplz -o '+str(config.lm_order)+' --discount_fallback < '+pth2+' 1> '+pth2+'.arpa 2>> '+config.working_dir+'/train.log')
   os.system(config.kenlm+'/build_binary '+pth2+'.arpa '+pth2+'.blm >> '+config.working_dir+'/train.log 2>&1')
 
 sys.stdout.write('Building the untuned system\n')
