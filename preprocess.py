@@ -1,6 +1,9 @@
-import config
+from config import load_config_file
+config=load_config_file()
+
 import os
 import sys
+
 
 train_orig=config.train_orig
 train_norm=config.train_norm
@@ -62,7 +65,7 @@ if config.dev_orig==None:
   sys.stdout.write('Reading data for splitting into train and dev\n')
   data=zip(open(config.train_orig),open(config.train_norm))
   shuffle(data)
-  train_size=round((1-config.dev_perc)*len(data))
+  train_size=round((1-float(config.dev_perc))*len(data))
   origf=open(config.train_orig+'.train','w')
   normf=open(config.train_norm+'.train','w')
   sys.stdout.write('Splitting the data\n')

@@ -1,4 +1,5 @@
-import config
+from config import load_config_file
+config=load_config_file()
 import os
 import sys
 
