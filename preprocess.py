@@ -85,7 +85,7 @@ if config.dev_orig==None:
   config.train_norm+='.train'
 
 sys.stdout.write('Preparing the data for learning the models\n')
-SEP=config.tokenseparator.decode('utf-8')
+SEP=config.tokenseparator#.decode('utf-8')
 warn=False
 def preprocess(input,output):
   out=open(output,'w')
