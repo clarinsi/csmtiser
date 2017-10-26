@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import yaml
+import os
 
 class ConfigAttributeDict(dict):
     __getattr__ = dict.__getitem__
@@ -19,14 +20,10 @@ def normalizer_config(cfg):
 
     # Absolute path to the directory in which the models should be created
     working_dir = cfg['working_dir']
-    cfg['truecase_dataset'] = working_dir + cfg['truecase_dataset']
+    cfg['truecase_dataset'] = os.path.join(working_dir, cfg['truecase_dataset'])
 
     # Training datasets
-    cfg['train_orig'] = working_dir + cfg['train_orig']
-    cfg['train_norm'] = working_dir + cfg['train_norm']
-
-    # Location of the datasets for language modeling, the target-side training data is always used (does not have to be defined)
-    # Experiments show that using multiple relevant target-language datasets as language models is the easiest way to improve your results
-    cfg['lms'] = [cfg['train_orig'][:-4]]  # remove endings
+    cfg['train_orig'] = os.path.join(working_dir, cfg['train_orig'])
+    cfg['train_norm'] = os.path.join(working_dir, cfg['train_norm'])
 
     return ConfigAttributeDict(cfg)
