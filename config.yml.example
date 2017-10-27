@@ -28,7 +28,7 @@ truecase_model: None
 lowercase: True
 
 # Whether the output should be verticalised and token-aligned
-align: True
+align: False
 
 # Training datasets
 train_orig: datasets/janes.norm.vert.train.orig
