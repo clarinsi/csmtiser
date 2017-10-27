@@ -18,16 +18,37 @@ Running the tool consists of the following steps:
 - building the models and tuning the system
 - running the final normaliser
 
-We exemplify each step on a dataset of Slovene tweets. The initial data consists of four files:
-- ```tweets_sl.orig``` and ```tweets_sl.norm``` contain parallel training data (i.e. each line of the ```orig file``` corresponds to a line in the ```norm``` file),
-- ```tweets_sl.all``` contains all available normalised data and is used to learn the truecasing model (optional, more on that below),
-- ```tweets_sl``` contains additional normalised data used to train a language model (i.e. in addition to the ```tweets_sl.norm``` file, which is by default used to train a language model).
+We exemplify each step on a dataset of Slovene tweets. The repo holds examples for normalizing whole tweets (```datasets/sentence_level```) and for normalizing tokens in isolation (```datasets/token_level```). While the token-by-token normalization seems linguistically wrong (discarding the context a word occurrs in), results show that not on all datasets improvements can be obtained with the computationally much more costly sentence-level normalizers. For more details, please inspect the two papers that should be cited if you use the tool:
+
+```
+@inproceedings{ljubesic16-normalising,
+	Author = {Nikola Ljube\v{s}i\'{c} and Katja Zupan and Darja Fi{\v s}er and Toma{\v z} Erjavec},
+	Booktitle = {Proceedings of the 13th Conference on Natural Language Processing (KONVENS 2016)},
+	Pages = {146--155},
+	Title = {{Normalising Slovene data: historical texts vs. user-generated content}},
+	Year = {2016}}
+
+@inproceedings{scherrer16-automatic,
+	Author = {Yves Scherrer and Nikola Ljube\v{s}i\'{c}},
+	Booktitle = {Proceedings of the 13th Conference on Natural Language Processing (KONVENS 2016)},
+	Pages = {248--255},
+	Title = {{Automatic normalisation of the Swiss German ArchiMob corpus using character-level machine translation}},
+	Year = {2016}}
+
+```
+
+The smaller models, built from the token-level datasets, are included in the repo while the following instructions cover how to train models for the sentence-level normaliser.
+
+The sentence-level data consists of four files:
+- ```datasets/sentence_level/tweets_sl.orig``` and ```datasets/sentence_level/tweets_sl.norm``` contain parallel training data (i.e. each line of the ```orig``` file corresponds to a line in the ```norm``` file),
+- ```datasets/sentence_level/tweets_sl.all``` contains all available normalised data and is used to learn the truecasing model (optional, more on that below),
+- ```datasets/sentence_level/tweets_sl``` contains additional normalised data used to train a language model (i.e. in addition to the ```tweets_sl.norm``` file, which is by default used to train a language model).
 
 ### Configuring your normaliser
 
 The first step is to let the normaliser know where to find components of the Moses SMT system and your initial data, as well as to define various parameters.
 
-To perform configuration, go through the ```config.py``` script and change values of variables where necessary. Comments inside the code should help you during the process.
+To perform configuration, copy the ```config.yml.sentence_level.example``` as the ```config.yml``` file and change values of variables where necessary. Comments inside the code should help you during the process. For running the sentence-level example no modifications are needed.
 
 Note that you can name your initial data files as you wish, but the parallel training files obligatorily have to end in ```.orig``` and ```.norm```.
 
