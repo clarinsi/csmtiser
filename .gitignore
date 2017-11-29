@@ -1,2 +1,5 @@
 config.yml
 .idea
+dist
+build
+mert-work/moses.ini

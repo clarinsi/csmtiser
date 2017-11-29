@@ -22,10 +22,10 @@
 UnknownWordPenalty
 WordPenalty
 PhrasePenalty
-PhraseDictionaryMemory name=TranslationModel0 num-features=4 path=/home/mperice/Projects/csmtiser/model/phrase-table.gz input-factor=0 output-factor=0
-KENLM lazyken=0 name=LM0 factor=0 path=/home/mperice/Projects/csmtiser/train.norm.blm order=6
-KENLM lazyken=0 name=LM1 factor=0 path=/home/mperice/Projects/csmtiser/lm_0.proc.blm order=6
-#This model has order 10 but KenLM was compiled to support up to 6.  If your build system supports changing KENLM_MAX_ORDER, change it there and recompile.  In the KenLM tarball or Moses, use e.g. `bjam --max-kenlm-order=6 -a'.  Otherwise, edit lm/max_order.hh.
+PhraseDictionaryMemory name=TranslationModel0 num-features=4 path=/home/nikola/tools/clarinsi/csmtiser/model/phrase-table.gz input-factor=0 output-factor=0
+KENLM lazyken=0 name=LM0 factor=0 path=/home/nikola/tools/clarinsi/csmtiser//train.norm.blm order=10
+KENLM lazyken=0 name=LM1 factor=0 path=/home/nikola/tools/clarinsi/csmtiser//lm_0.proc.blm order=10
+
 # dense weights for feature functions
 
 [threads]

@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 
 # Configuration file of the normaliser. The paths to Moses components and various parameters are set here.
@@ -43,7 +42,7 @@ dev_norm: None
 # Location of the datasets for language modeling, the target-side training data is always used (does not have to be defined)
 # Experiments show that using multiple relevant target-language datasets as language models is the easiest way to improve your results
 lms:
-- datasets/sentence_level/tweet_sl
+  - datasets/sentence_level/tweet_sl
 
 # Order of the language model, if you have compiled KenLM allowing orders higher than 6, order 10 has shown to yield best results
 lm_order: 10

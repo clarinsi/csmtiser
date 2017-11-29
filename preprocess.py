@@ -1,4 +1,4 @@
-from config import load_config_file
+from csmtiser.config import load_config_file
 config=load_config_file()
 
 import os
