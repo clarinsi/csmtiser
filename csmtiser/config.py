@@ -22,8 +22,12 @@ def normalizer_config(cfg):
     working_dir = cfg['working_dir']
     cfg['truecase_dataset'] = os.path.join(working_dir, cfg['truecase_dataset'])
 
-    # Training datasets
+    # Training, dev, lm datasets
     cfg['train_orig'] = os.path.join(working_dir, cfg['train_orig'])
     cfg['train_norm'] = os.path.join(working_dir, cfg['train_norm'])
+    cfg['dev_orig'] = os.path.join(working_dir, cfg['dev_orig'])
+    cfg['dev_norm'] = os.path.join(working_dir, cfg['dev_norm'])
+    for idx,lm in enumerate(cfg['lms']):
+        cfg['lms'][idx] = os.path.join(working_dir, cfg['lms'][idx])
 
     return ConfigAttributeDict(cfg)
