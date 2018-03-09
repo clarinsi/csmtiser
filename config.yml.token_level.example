@@ -19,9 +19,9 @@ tokenise: False
 # Whether the data should be truecased.
 truecase: False
 # Location of the dataset on which truecasing should be learnt, if no dataset (or model) is given, truecasing is learnt on both sides of the training data
-truecase_dataset: None
+truecase_dataset: null
 # If you already have a truecasing model available, just give its path and that model will be used
-truecase_model: None
+truecase_model: null
 
 # Whether the data should be lowercased, if the data is written in non-standard orthography (like Twitter data), this is probably a good idea, however, all normalisation will therefore be lowercased as well
 lowercase: True
