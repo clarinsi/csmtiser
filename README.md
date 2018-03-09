@@ -83,7 +83,7 @@ The process produces the training (```train.orig``` and ```train.norm```) and de
 
 Building specific models and tuning the overall system is performed with one script, ```train.py```.
 
-The script takes, as the ```preprocess.py``` script, parameters from the ```config.py``` script.
+The script takes, as the ```preprocess.py``` script, parameters from the ```config.yml``` config file.
 
 The exemplary run of this step produces the following output (logging the output of the training and tuning tools to ```train.log```):
 
