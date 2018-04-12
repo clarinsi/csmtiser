@@ -30,5 +30,4 @@ def normalizer_config(cfg):
         cfg['dev_norm'] = os.path.join(working_dir, cfg['dev_norm'])
     for idx,lm in enumerate(cfg['lms']):
         cfg['lms'][idx] = os.path.join(working_dir, cfg['lms'][idx])
-    print cfg
     return ConfigAttributeDict(cfg)
