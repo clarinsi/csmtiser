@@ -14,3 +14,5 @@ RUN git clone https://github.com/moses-smt/mgiza.git && \
 
 RUN pip install -r https://raw.githubusercontent.com/clarinsi/csmtiser/master/requirements.txt && \
     cp /mgiza/mgizapp/scripts/merge_alignment.py /mgiza/mgizapp/bin/merge_alignment.py
+
+WORKDIR /csmtiser

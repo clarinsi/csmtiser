@@ -10,6 +10,14 @@ The tool requires the following tools to be installed:
 
 Additionally, the tool expects basic bash functionality and can therefore be run on *NIX systems / environments only.
 
+### Using Docker
+
+You can use pre-build Docker image to run cSMTiser without installing moses and mgiza on your machine. For example:
+```console
+$ docker run -v ~/csmtiser:/csmtiser greegorey/csmtiser python preprocess.py
+```
+See detailed instructions in [docker/README.md](https://github.com/clarinsi/csmtiser/blob/master/docker/README.md)
+
 ## Running the tool
 
 Running the tool consists of the following steps:
