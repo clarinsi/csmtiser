@@ -56,7 +56,7 @@ The sentence-level data consists of four files:
 
 The first step is to let the normaliser know where to find components of the Moses SMT system and your initial data, as well as to define various parameters.
 
-To perform configuration, copy the ```config.yml.sentence_level.example``` as the ```config.yml``` file and change values of variables where necessary. Comments inside the code should help you during the process. For running the sentence-level example no modifications are needed.
+To perform configuration, copy the ```config.yml.sentence_level.example``` and change values of variables where necessary. You can name your copy as you wish, but we will name it ```myconfig.yml``` in this example. Comments inside the code should help you during the process. For running the sentence-level example no modifications are needed.
 
 Note that you can name your initial data files as you wish, but the parallel training files obligatorily have to end in ```.orig``` and ```.norm```.
 
@@ -75,7 +75,7 @@ After truecasing or lowercasing, the dataset is split into train and dev data (i
 Our examplary run of this step produces the following output:
 
 ```
-$ python preprocess.py
+$ python preprocess.py myconfig.yml
 Learning the truecaser
 Truecasing tweet_sl.orig
 Truecasing tweet_sl.norm
@@ -85,18 +85,18 @@ Splitting the data
 Preparing the data for learning models
 ```
 
-The process produces the training (```train.orig``` and ```train.norm```) and development datasets (```dev.orig``` and ```dev.norm```), as well as one dataset per each additional language model, in our case ```lm_0.proc```.
+The process produces the training (```train.orig``` and ```train.norm```) and development datasets (```dev.orig``` and ```dev.norm```), as well as one dataset per each additional language model, in our case ```lm_0.proc```. If your configuration file is called ```config.yml```, you do not need to specify its name.
 
 ### Building the models and tuning the system
 
 Building specific models and tuning the overall system is performed with one script, ```train.py```.
 
-The script takes, as the ```preprocess.py``` script, parameters from the ```config.yml``` config file.
+The script takes, as the ```preprocess.py``` script, parameters from the config file given as an argument (or from the file ```config.yml``` if no argument is given).
 
 The exemplary run of this step produces the following output (logging the output of the training and tuning tools to ```train.log```):
 
 ```
-$ python train.py
+$ python train.py myconfig.yml
 Deleting old models in the working directory
 Building a LM from /home/nikola/tools/clarinsi/csmtiser//train.norm
 Building a LM from tweet_sl
@@ -110,19 +110,19 @@ During the first runs the logging script ```train.log``` should be analysed to m
 Additionally, training the exemplary system on 23 server-grade cores takes 2.3 hours (all together 47 CPU hours), so running the training procedure in the background is probably a good idea. The simplest way to do so on a *NIX is this:
 
 ```
-$ nohup python train.py &
+$ nohup python train.py myconfig.yml &
 ```
 
 ### Running the normaliser
 
-The final normaliser is run through the ```normalise.py``` script, where the first argument is the file whose content has to be normalised. The output is stored to the same path extended with the extension ```.norm```.
+The final normaliser is run through the ```normalise.py``` script, where the first argument is the config file, and the second argument is the file whose content has to be normalised. The output is stored to the same path extended with the extension ```.norm```.
 
 Logging of the normalisation process is performed in ```norm.log``` in the working directory.
 
 The exemplary normaliser can be run like this:
 
 ```
-python normalise.py text_to_normalise.txt
+python normalise.py myconfig.yml text_to_normalise.txt
 ```
 
 The output is available in ```text_to_normalise.txt.norm```. If tokenisation or truecasing are performed during data preparation, the reverse processes are run at the end of the normalisation process.

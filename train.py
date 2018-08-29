@@ -1,7 +1,11 @@
 from csmtiser.config import load_config_file
-config=load_config_file()
-import os
 import sys
+if len(sys.argv) > 1:
+  config=load_config_file(sys.argv[1])
+else:
+  config=load_config_file()
+
+import os
 
 sys.stdout.write('Deleting old models in the working directory\n')
 os.system('rm -rf '+config.working_dir+'/corpus')

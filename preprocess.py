@@ -1,9 +1,11 @@
 from csmtiser.config import load_config_file
-config=load_config_file()
+import sys
+if len(sys.argv) > 1:
+  config=load_config_file(sys.argv[1])
+else:
+  config=load_config_file()
 
 import os
-import sys
-
 
 train_orig=config.train_orig
 train_norm=config.train_norm
@@ -99,6 +101,6 @@ preprocess(config.train_norm,config.working_dir+'/train.norm')
 preprocess(config.dev_orig,config.working_dir+'/dev.orig')
 preprocess(config.dev_norm,config.working_dir+'/dev.norm')
 for index,pth in enumerate(config.lms):
-  preprocess(pth,'lm_'+str(index)+'.proc')
+  preprocess(pth,config.working_dir+'/lm_'+str(index)+'.proc')
 if warn:
   print("You have chosen a token separator ({}) that occurs in the data! Consider choosing another separator in config.py.".format(SEP))

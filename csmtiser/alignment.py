@@ -157,7 +157,10 @@ def rebalanceAlignments(oChars, tChars, alignments, SEP="_"):
 				print "** Merge alignments:", "".join(previousSequence[0]), "".join(previousSequence[1]), "".join(oSequence), "".join(tSequence)
 			mergedAlignment = (alignments[i-1][0], alignment[1], alignments[i-1][2], alignment[3])
 			alignments2.append(mergedAlignment)
-			alignments2.remove(alignments[i-1])
+			try:
+				alignments2.remove(alignments[i-1])
+			except ValueError:
+				print "Cannot remove alignment point:", alignments[i-1]
 		else:
 			alignments2.append(alignment)
 		previousCounts = currentCounts
