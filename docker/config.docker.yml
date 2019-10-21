@@ -45,7 +45,7 @@ lms:
   - datasets/sentence_level/tweet_sl
 
 # Order of the language model, if you have compiled KenLM allowing orders higher than 6, order 10 has shown to yield best results
-lm_order: 10
+lm_order: 6
 
 # Location of the Moses scripts
 moses_scripts: /moses/scripts/
