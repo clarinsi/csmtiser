@@ -20,7 +20,8 @@ def normalizer_config(cfg):
 
     # Absolute path to the directory in which the models should be created
     working_dir = cfg['working_dir']
-    cfg['truecase_dataset'] = os.path.join(working_dir, cfg['truecase_dataset'])
+    if cfg['truecase']:
+        cfg['truecase_dataset'] = os.path.join(working_dir, cfg['truecase_dataset'])
 
     # Training, dev, lm datasets
     cfg['train_orig'] = os.path.join(working_dir, cfg['train_orig'])
